@@ -135,7 +135,7 @@ export default function Home() {
         <StatusBar backgroundColor={colors.gray[600]} style='light' />
         <Welcome
           title='Pomodoro'
-          subtitle='Planeie seus estudos de forma inteligente!'
+          subtitle='Planeie seus estudos de forma inteligente.'
         />
         <View style={s.container}>
           <Text style={s.label}>Tema a estudar</Text>
