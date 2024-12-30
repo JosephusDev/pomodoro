@@ -33,8 +33,8 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router", 
-      "expo-font", 
+      "expo-router",
+      "expo-font",
       "expo-audio"
     ],
     "experiments": {
@@ -47,6 +47,7 @@
       "eas": {
         "projectId": "48b7650a-217b-4677-b8d5-d955b6c7177d"
       }
-    }
+    },
+    "owner": "josephusdev"
   }
 }
