@@ -15,6 +15,8 @@ import { colors } from '@/styles/colors'
 import MyModal from '@/components/my-modal'
 import { StatusBar } from 'expo-status-bar'
 import { scheduleNotification } from '@/services/notifications';
+import { addTarefa } from '@/models/tarefas'
+import { useSQLiteContext } from 'expo-sqlite'
 
 
 export default function CreateTask() {
@@ -25,8 +27,16 @@ export default function CreateTask() {
   const [tempo, setTempo] = useState<Date>(new Date())
   const [tema, setTema] = useState('')
   const [agendado, setAgendado] = useState(false)
+  const db = useSQLiteContext();
 
-  const CallScheduleNotification = () => {
+  const CallScheduleNotification = async () => {
+    await addTarefa(db, {
+      tarefa: tema,
+      data: data,
+      hora: data.getHours(),
+      minuto: data.getMinutes(),
+      status: 'Pendente'
+    })
     scheduleNotification(data, tema)
     setAgendado(true)
   }

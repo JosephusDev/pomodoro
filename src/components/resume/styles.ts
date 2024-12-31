@@ -29,10 +29,17 @@ export const s = StyleSheet.create({
     fontSize: 12,
     fontFamily: fontFamily.bold
   },
-  line: {
+  view_progress: { 
+    pointerEvents: "none",
+    marginBottom: 20
+  },
+  progress: {
     width: '100%',
-    backgroundColor: colors.red.base,
-    height: 2,
-    marginBottom: 5
+  },
+  progress_text: {
+    color: colors.gray[100],
+    fontFamily: fontFamily.bold,
+    fontSize: 14,
+    marginTop: 5
   }
 })

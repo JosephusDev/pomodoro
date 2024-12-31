@@ -7,7 +7,7 @@ export const s = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 20,
     borderColor: colors.gray[100],
     borderWidth: 1,
     marginBottom: 10,
@@ -18,10 +18,11 @@ export const s = StyleSheet.create({
     shadowOpacity: 0.2,
   },
   tarefa: {
+    width: 170,
     color: colors.gray[100],
     fontFamily: fontFamily.bold,
     fontSize: 15,
-    marginBottom: 8,
+    marginBottom: 8
   },
   container_item: {
     flex: 1,
@@ -35,6 +36,6 @@ export const s = StyleSheet.create({
     fontSize: 15,
   },
   trash: {
-    marginLeft: 55
+    marginLeft: 30
   }
 })

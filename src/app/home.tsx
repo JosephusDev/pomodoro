@@ -1,5 +1,5 @@
 import { Welcome } from '@/components/welcome'
-import { Alert, FlatList, ScrollView, Text, View } from 'react-native'
+import { FlatList, View } from 'react-native'
 import { s } from '@/styles/app/home'
 import { colors } from '@/styles/colors'
 import { StatusBar } from 'expo-status-bar'
@@ -10,8 +10,8 @@ import { useEffect, useState } from 'react'
 import ListEmpty from '@/components/list-empty'
 import Todo from '@/components/todo'
 import Resume from '@/components/resume'
-import MyModal from '@/components/my-modal'
-import Button from '@/components/button'
+import { getTarefas, updateTarefa, deleteTarefa } from '@/models/tarefas'
+import { useSQLiteContext } from 'expo-sqlite'
 
 interface IAgendamento {
   id: number;
@@ -22,52 +22,36 @@ interface IAgendamento {
   status: "Concluido" | "Pendente";
 }
 
-const data: IAgendamento[] = [
-  {
-    id: 1,
-    tarefa: 'Estudar React Native',
-    data: new Date(),
-    hora: 12,
-    minuto: 0,
-    status: 'Pendente',
-  },
-  {
-    id: 2,
-    tarefa: 'Fazer exercícios',
-    data: new Date(),
-    hora: 8,
-    minuto: 0,
-    status: 'Concluido',
-  },
-  {
-    id: 3,
-    tarefa: 'Fazer exercícios',
-    data: new Date(),
-    hora: 8,
-    minuto: 0,
-    status: 'Concluido',
-  },
-]
-
 export default function Home() {
 
   const [agendamentos, setAgendamentos] = useState<IAgendamento[]>([])
-  const [visivelModal, setVisivelModal] = useState(false)
-  const [aviso, setAviso] = useState("")
 
-  const handleDelete = (id: number) => {
-    setVisivelModal(true)
-    setAviso("Deseja excluir este agendamento?")
+  const db = useSQLiteContext()
+
+  const handleDelete = async (id: number) => {
+    await deleteTarefa(db, id)
   }
 
-  const handleChangeState = (id: number) => {
-    setVisivelModal(true)
-    setAviso("Deseja concluir este agendamento?")
+  const handleChangeState = async (id: number, status: "Concluido" | "Pendente") => {
+    if(status === 'Pendente'){
+      await updateTarefa(db, id, 'Concluido')
+    }else{
+      await updateTarefa(db, id, 'Pendente')
+    }
+  }
+
+  const fetchTarefas = async () => {
+    const result = await getTarefas(db)
+    if (result) {
+      setAgendamentos(result)
+    }
   }
 
   useEffect(() => {
-    setAgendamentos(data)
-  }, [])
+    fetchTarefas()
+  }, [agendamentos])
+
+  const concluidas = agendamentos.filter((a)=>a.status === 'Concluido').length
 
   return (
     <View style={s.main}>
@@ -76,7 +60,7 @@ export default function Home() {
         title='Lista de Tarefas'
         subtitle='Gerencie seus estudos agendados.'
       />
-      <Resume criadas={3} concluidas={2}/>
+      <Resume criadas={agendamentos.length} concluidas={concluidas}/>
       <View style={s.container}>
         {
           agendamentos.length <= 0 ? (
@@ -88,11 +72,7 @@ export default function Home() {
               renderItem={({item}) => 
                 <Todo 
                   data={item} 
-                  onPressStatus={()=>{
-                    if(item.status === "Pendente"){
-                      handleChangeState(item.id)
-                    }
-                  }} 
+                  onPressStatus={()=>handleChangeState(item.id, item.status)} 
                   onPressDelete={()=>handleDelete(item.id)}
                   onClick={()=>router.navigate(`/pomodoro?estudo=${item.tarefa}`)}
                 />
@@ -104,19 +84,6 @@ export default function Home() {
         }
       </View>
       <FloatingButton icon={IconPlus} style={{bottom: 20}} onPress={()=>router.navigate('/create')}/>
-      <MyModal
-        title='Aviso'
-        visible={visivelModal}
-        subtitle={aviso}
-      >
-        <Button
-          onClick={()=>{
-            setVisivelModal(false)
-          }}
-          title='Confirmar'
-          style={{backgroundColor: colors.red.base}}
-        />
-      </MyModal>
     </View>
   )
 }
