@@ -36,7 +36,7 @@ export default function Resume({
           thumbTintColor={colors.red.base}
         />
         <Text style={s.progress_text}>
-          {Math.round((concluidas / criadas) * 100)}% concluídas
+          {criadas > 0 ? Math.round((concluidas / criadas) * 100): 0}% concluídas
         </Text>
       </View>
     </View>
