@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text } from 'react-native'
 import { s } from './styles'
 import Step from '../step'
 import {
@@ -8,6 +8,7 @@ import {
 } from '@tabler/icons-react-native'
 import { router } from 'expo-router'
 import Button from '../button'
+import { colors } from '@/styles/colors'
 
 export function Steps() {
   return (
@@ -25,11 +26,15 @@ export function Steps() {
       />
       <Step
         icon={IconClock}
-        title='Alarmes para Nunca Perder o Ritmo'
-        description='Os alarmes garantem que você saiba exatamente quando é hora de trabalhar e quando é hora de descansar. Personalize os sons para torná-los ideais para seu ambiente.'
+        title='Notificações para Nunca Perder o Ritmo'
+        description='As notificações garantem que você saiba exatamente quando é hora de estudar e quando é hora de descansar.'
       />
       <View style={s.containerButton}>
-        <Button title='Começar' onClick={() => router.navigate('/home')} />
+        <Button 
+          title='Começar' 
+          onClick={() => router.navigate('/home')} 
+          style={{backgroundColor: colors.red.base}}
+        />
       </View>
     </View>
   )

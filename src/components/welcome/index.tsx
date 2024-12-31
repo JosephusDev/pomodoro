@@ -4,12 +4,17 @@ import { s } from './styles'
 interface IWelcomeProps {
   title: string
   subtitle: string
+  imageVisible?: boolean
 }
 
-export function Welcome({ title, subtitle }: IWelcomeProps) {
+export function Welcome({ title, subtitle, imageVisible = true }: IWelcomeProps) {
   return (
     <View>
-      <Image source={require('@/assets/images/pomodoro.png')} style={s.logo} />
+      {
+        imageVisible && (
+          <Image source={require('@/assets/images/pomodoro.png')} style={s.logo} />
+        )
+      }
       <Text style={s.title}>{title}</Text>
       <Text style={s.subtitle}>{subtitle}</Text>
     </View>

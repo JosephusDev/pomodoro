@@ -9,7 +9,6 @@ export const s = StyleSheet.create({
     flexDirection: 'row',
   },
   button: {
-    backgroundColor: colors.red.base,
     paddingVertical: 16,
     paddingHorizontal: 16,
     alignItems: 'center',
