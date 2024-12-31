@@ -14,12 +14,12 @@ export const s = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    color: colors.red.base,
+    color: colors.gray[100],
     fontFamily: fontFamily.bold,
     fontSize: 16
   },
   badge: {
-    backgroundColor: colors.gray[500],
+    backgroundColor: colors.red.base,
     color: colors.gray[100],
     height: 25,
     width: 25,
@@ -31,7 +31,7 @@ export const s = StyleSheet.create({
   },
   line: {
     width: '100%',
-    backgroundColor: colors.gray[500],
+    backgroundColor: colors.red.base,
     height: 2,
     marginBottom: 5
   }

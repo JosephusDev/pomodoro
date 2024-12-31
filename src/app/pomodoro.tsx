@@ -44,6 +44,7 @@ export default function Pomodoro() {
   const [tema, setTema] = useState<string | ''>(String(estudo) || '')
   const [isLoading, setIsLoading] = useState(false)
   const [pomodoroPlanVisible, setPomodoroPlanVisible] = useState(false)
+  const [isNotificatedForRest, setIsNotificatedForRest] = useState(false)
 
   const playSound = async () => {
     const { sound } = await Audio.Sound.createAsync(Alarme)
@@ -78,8 +79,6 @@ export default function Pomodoro() {
     const now = new Date()
     now.setMinutes(now.getMinutes() + descanso)
     setWatchDuration(now)
-    console.log('Descanso foi agendado: ' + now)
-    scheduleRestNotification(now)
     setIsDescanso(true)
     contando.current = true
   }
@@ -93,6 +92,15 @@ export default function Pomodoro() {
 
       if (horaAtual === hora && minutoAtual === minuto) {
         contando.current = true
+        if(!isNotificatedForRest){
+          const rest_time = new Date(now)
+          rest_time.setMinutes(rest_time.getMinutes() + duration)
+          const end_rest_time = new Date(now)
+          end_rest_time.setMinutes(end_rest_time.getMinutes() + (duration + descanso))
+          console.log(`Descanso foi agendado para: ${rest_time} até às ' + ${end_rest_time}`)
+          scheduleRestNotification(rest_time, end_rest_time)
+          setIsNotificatedForRest(true)
+        }
       }
 
       if (contando.current && dateChanged) {
@@ -120,7 +128,7 @@ export default function Pomodoro() {
       }
     }, 1000)
     return () => clearInterval(interval)
-  }, [dateChanged, isDescanso])
+  }, [dateChanged, isDescanso, isNotificatedForRest])
 
   const fetchPomodoroPlan = async () => {
     if (pomodoroPlan || !tema){
@@ -204,14 +212,16 @@ export default function Pomodoro() {
               onChange={(event, selectedDate) => {
                 if (selectedDate) {
                     console.log('Estudo foi agendado: ' + selectedDate)
-                    scheduleNotification(selectedDate, tema)
                     setInicio(selectedDate)
                     setHora(selectedDate.getHours())
                     setMinuto(selectedDate.getMinutes())
                     setDateChanged(true)
                     contando.current = false
-                    selectedDate.setMinutes(selectedDate.getMinutes() + duration)
-                    setWatchDuration(selectedDate)
+                    // Crie uma nova instância de Date para evitar modificar o objeto original
+                    const _datetime = new Date(selectedDate)
+                    _datetime.setMinutes(_datetime.getMinutes() + duration)
+                    setWatchDuration(_datetime)
+                    scheduleNotification(selectedDate, tema)
                 }
                 setShow(false)
               }}
