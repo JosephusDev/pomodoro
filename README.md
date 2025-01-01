@@ -37,17 +37,16 @@ Um aplicativo de produtividade baseado na técnica Pomodoro, projetado para ajud
 - Suporte para temas claros e escuros.  
 - Integração com calendários para agendamento avançado.  
 
-## Instalação 🛠️  
-1. Clone este repositório:  
-   ```bash  
-   git clone https://github.com/JosephusDev/pomodoro.git
-   ```
-  ```bash
-   npm install
-  ```
-  ```bash
-   npx expo start  
-  ```
+## Instalação 🛠️
+```bash  
+git clone https://github.com/JosephusDev/pomodoro.git
+```
+```bash
+npm install
+```
+```bash
+npx expo start  
+```
 ## Contribuição 🤝
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
 
