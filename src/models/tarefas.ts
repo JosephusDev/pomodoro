@@ -1,13 +1,5 @@
+import { ITarefa } from "@/types";
 import { SQLiteDatabase } from "expo-sqlite";
-
-export interface ITarefa {
-  id: number;
-  tarefa: string;
-  data: Date;
-  hora: number;
-  minuto: number;
-  status: "Concluido" | "Pendente";
-}
 
 export const addTarefa = async (db: SQLiteDatabase, data: Omit<ITarefa, "id">) => {
     try {

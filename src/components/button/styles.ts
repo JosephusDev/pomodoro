@@ -12,6 +12,7 @@ export const s = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 16,
     alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: DEFAULT_STYLE.radius,
   },
   buttonText: {

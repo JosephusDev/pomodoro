@@ -26,7 +26,6 @@ export const scheduleNotification = async (data: Date, tema: string) => {
     })
     .then((value)=>{
         console.log(value)
-        console.log("Notificação de Estudo: " + _data)
     })
     .catch((error)=>{
         console.log("Erro ao agendar: " + error)
@@ -48,7 +47,6 @@ export const scheduleRestNotification = async (rest_data: Date, end_rest_data: D
     })
     .then((value)=>{
         console.log(value)
-        console.log(`​​😫​ Olá! Chegou a hora de fazer a pausa agendada para às ${hora}:${minuto} até às ${_hora}:${_minuto}.`)
     })
     .catch((error)=>{
         console.log("Erro ao agendar: " + error)

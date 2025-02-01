@@ -30,7 +30,7 @@ export const s = StyleSheet.create({
     color: colors.gray[600],
     marginTop: 15,
     marginBottom: 15,
-    textAlign: 'justify',
+    textAlign: 'center',
   },
   temporizador: {
     marginTop: 30,
