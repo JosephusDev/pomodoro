@@ -1,5 +1,5 @@
 import { Welcome } from '@/components/welcome'
-import { ScrollView, Text, View } from 'react-native'
+import { ScrollView, Text, ToastAndroid, View } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import Button from '@/components/button'
 import { IconCalendar, IconClockHour1, IconPlus, IconX } from '@tabler/icons-react-native'
@@ -22,15 +22,19 @@ export default function CreateTask() {
 	const db = useSQLiteContext()
 
 	const CallScheduleNotification = async () => {
-		await addTarefa(db, {
-			tarefa: tema,
-			data: data,
-			hora: data.getHours(),
-			minuto: data.getMinutes(),
-			status: 'Pendente',
-		})
-		scheduleNotification(data, tema)
-		setAgendado(true)
+		if (tema.trim() && data) {
+			await addTarefa(db, {
+				tarefa: tema,
+				data: data,
+				hora: data.getHours(),
+				minuto: data.getMinutes(),
+				status: 'Pendente',
+			})
+			scheduleNotification(data, tema)
+			setAgendado(true)
+		} else {
+			ToastAndroid.show('Preencha todos os campos.', ToastAndroid.SHORT)
+		}
 	}
 
 	return (
