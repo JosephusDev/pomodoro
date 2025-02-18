@@ -11,7 +11,7 @@
 		"splash": {
 			"image": "./assets/images/splash-icon.png",
 			"resizeMode": "cover",
-			"backgroundColor": "#ffffff"
+			"backgroundColor": "#000000"
 		},
 		"ios": {
 			"supportsTablet": true
@@ -19,7 +19,7 @@
 		"android": {
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/images/adaptive-icon.png",
-				"backgroundColor": "#ffffff"
+				"backgroundColor": "#000000"
 			},
 			"permissions": ["android.permission.RECORD_AUDIO", "android.permission.MODIFY_AUDIO_SETTINGS"],
 			"package": "com.josephusdev.pomodoro"

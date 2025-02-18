@@ -144,138 +144,132 @@ export default function Pomodoro() {
 	return (
 		<ScrollView>
 			<View style={s.main}>
-				<Welcome
-					title='Pomodoro'
-					subtitle='Marque de forma simples o ciclo de estudo ou receba sugestões inteligentes.'
-				/>
-				<View style={s.container}>
-					<Text style={s.label}>O que vai estudar?</Text>
-					<View style={s.InputGroup}>
-						<Input
-							value={tema}
-							onValueChange={value => {
-								setTema(value)
-								setPomodoroPlan('')
-							}}
-							placeholder='Ex.: Anatomia'
-							style={{ width: '82%' }}
-						/>
-						<Button
-							onClick={() => {
-								fetchPomodoroPlan()
-							}}
-							icon={isLoading ? IconDots : IconRobotFace}
-							disabled={isLoading}
-							style={{ backgroundColor: colors.red.base }}
-						/>
-					</View>
-					<Text style={s.label}>Duração em minutos</Text>
+				<Text style={s.label}>O que vai estudar?</Text>
+				<View style={s.InputGroup}>
 					<Input
-						keyboardType='decimal-pad'
-						value={String(duration)}
+						value={tema}
 						onValueChange={value => {
-							setDuration(Number(value))
+							setTema(value)
+							setPomodoroPlan('')
+						}}
+						placeholder='Ex.: Anatomia'
+						style={{ width: '82%', paddingVertical: 5, textAlign: 'center' }}
+					/>
+					<Button
+						onClick={() => {
+							fetchPomodoroPlan()
+						}}
+						icon={isLoading ? IconDots : IconRobotFace}
+						disabled={isLoading}
+						style={{ backgroundColor: colors.red.base }}
+					/>
+				</View>
+				<Text style={s.label}>Duração em minutos</Text>
+				<Input
+					keyboardType='decimal-pad'
+					value={String(duration)}
+					onValueChange={value => {
+						setDuration(Number(value))
+					}}
+				/>
+				<Text style={s.label}>Tempo de descanso</Text>
+				<Input
+					keyboardType='decimal-pad'
+					value={String(descanso)}
+					onValueChange={value => setDescanso(Number(value))}
+				/>
+				<View style={s.containerButton}>
+					{contando.current ? (
+						<Button
+							title='Parar'
+							onClick={() => setDateChanged(false)}
+							icon={IconClockStop}
+							style={{ backgroundColor: colors.red.base, width: '100%' }}
+						/>
+					) : (
+						<Button
+							title='Hora de início'
+							onClick={() => setShow(true)}
+							icon={IconClockHour1}
+							style={{ backgroundColor: colors.gray[500], width: '100%' }}
+						/>
+					)}
+				</View>
+				{show && (
+					<DateTimePicker
+						testID='dateTimePicker'
+						value={inicio}
+						mode='time'
+						is24Hour={true}
+						display='spinner'
+						onChange={(event, selectedDate) => {
+							if (selectedDate) {
+								console.log('Estudo foi agendado: ' + selectedDate)
+								setInicio(selectedDate)
+								setHora(selectedDate.getHours())
+								setMinuto(selectedDate.getMinutes())
+								setDateChanged(true)
+								contando.current = false
+								// Crie uma nova instância de Date para evitar modificar o objeto original
+								const _datetime = new Date(selectedDate)
+								_datetime.setMinutes(_datetime.getMinutes() + duration)
+								setWatchDuration(_datetime)
+								scheduleNotification(selectedDate, tema)
+							}
+							setShow(false)
 						}}
 					/>
-					<Text style={s.label}>Tempo de descanso</Text>
-					<Input
-						keyboardType='decimal-pad'
-						value={String(descanso)}
-						onValueChange={value => setDescanso(Number(value))}
-					/>
-					<View style={s.containerButton}>
-						{contando.current ? (
-							<Button
-								title='Parar'
-								onClick={() => setDateChanged(false)}
-								icon={IconClockStop}
-								style={{ backgroundColor: colors.red.base, width: '100%' }}
-							/>
+				)}
+				{dateChanged && (
+					<View>
+						{!contando.current ? (
+							<Text style={s.alerta}>Seu estudo começará às</Text>
+						) : isDescanso ? (
+							<Text style={s.alerta}>Aproveite o descanso!</Text>
 						) : (
-							<Button
-								title='Hora de início'
-								onClick={() => setShow(true)}
-								icon={IconClockHour1}
-								style={{ backgroundColor: colors.gray[500], width: '100%' }}
-							/>
+							<Text style={s.alerta}>Bons estudos!</Text>
 						)}
-					</View>
-					{show && (
-						<DateTimePicker
-							testID='dateTimePicker'
-							value={inicio}
-							mode='time'
-							is24Hour={true}
-							display='spinner'
-							onChange={(event, selectedDate) => {
-								if (selectedDate) {
-									console.log('Estudo foi agendado: ' + selectedDate)
-									setInicio(selectedDate)
-									setHora(selectedDate.getHours())
-									setMinuto(selectedDate.getMinutes())
-									setDateChanged(true)
-									contando.current = false
-									// Crie uma nova instância de Date para evitar modificar o objeto original
-									const _datetime = new Date(selectedDate)
-									_datetime.setMinutes(_datetime.getMinutes() + duration)
-									setWatchDuration(_datetime)
-									scheduleNotification(selectedDate, tema)
-								}
-								setShow(false)
-							}}
-						/>
-					)}
-					{dateChanged && (
-						<View>
-							{!contando.current ? (
-								<Text style={s.alerta}>Seu estudo começará às</Text>
-							) : isDescanso ? (
-								<Text style={s.alerta}>Aproveite o descanso!</Text>
-							) : (
-								<Text style={s.alerta}>Bons estudos!</Text>
-							)}
-							<Text
-								style={[
-									{
-										color: contando.current ? colors.red.base : colors.gray[100],
-									},
-									s.temporizador,
-								]}
-							>
-								{String(hora).padStart(2, '0')} : {String(minuto).padStart(2, '0')} : {String(segundo).padStart(2, '0')}
-							</Text>
-						</View>
-					)}
-					<MyModal title={pomodoroPlan ? 'Recomendação' : 'Nota Importante!'} visible={pomodoroPlanVisible}>
-						<Text style={s.descriptionIA}>
-							{pomodoroPlan
-								? pomodoroPlan
-								: 'Informe o que vai estudar se deseja receber sugestões de estudo e gestão de tempo através de Inteligência Artificial'}
+						<Text
+							style={[
+								{
+									color: contando.current ? colors.red.base : colors.gray[100],
+								},
+								s.temporizador,
+							]}
+						>
+							{String(hora).padStart(2, '0')} : {String(minuto).padStart(2, '0')} : {String(segundo).padStart(2, '0')}
 						</Text>
-						<Button
-							title='Fechar'
-							onClick={() => setPomodoroPlanVisible(false)}
-							icon={IconX}
-							style={{ backgroundColor: colors.red.base, height: 40, marginTop: 10 }}
-						/>
-					</MyModal>
-					<MyModal
-						visible={playing}
-						title={isDescanso ? 'Hora de descansar' : 'Descanso concluído.'}
-						subtitle={
-							isDescanso
-								? `Aproveite descansar até às ${watchDuration.getHours()}H : ${watchDuration.getMinutes()}min`
-								: 'Volte a marcar mais um ciclo de estudos!'
-						}
-					>
-						<Button
-							title='Parar alarme'
-							onClick={stopSound}
-							icon={IconBellOff}
-							style={{ backgroundColor: colors.red.base, height: 40, marginTop: 10 }}
-						/>
-					</MyModal>
-				</View>
+					</View>
+				)}
+				<MyModal title={pomodoroPlan ? 'Recomendação' : 'Nota Importante!'} visible={pomodoroPlanVisible}>
+					<Text style={s.descriptionIA}>
+						{pomodoroPlan
+							? pomodoroPlan
+							: 'Informe o que vai estudar se deseja receber sugestões de estudo e gestão de tempo através de Inteligência Artificial'}
+					</Text>
+					<Button
+						title='Fechar'
+						onClick={() => setPomodoroPlanVisible(false)}
+						icon={IconX}
+						style={{ backgroundColor: colors.red.base, height: 40, marginTop: 10 }}
+					/>
+				</MyModal>
+				<MyModal
+					visible={playing}
+					title={isDescanso ? 'Hora de descansar' : 'Descanso concluído.'}
+					subtitle={
+						isDescanso
+							? `Aproveite descansar até às ${watchDuration.getHours()}H : ${watchDuration.getMinutes()}min`
+							: 'Volte a marcar mais um ciclo de estudos!'
+					}
+				>
+					<Button
+						title='Parar alarme'
+						onClick={stopSound}
+						icon={IconBellOff}
+						style={{ backgroundColor: colors.red.base, height: 40, marginTop: 10 }}
+					/>
+				</MyModal>
 			</View>
 		</ScrollView>
 	)

@@ -40,77 +40,74 @@ export default function CreateTask() {
 	return (
 		<ScrollView>
 			<View style={s.main}>
-				<Welcome title='Agendar estudo' subtitle='Agende aqui o quê e quando irá estudar.' />
-				<View style={s.container}>
-					<Text style={s.label}>O que vai estudar?</Text>
-					<Input
-						value={tema}
-						onValueChange={value => {
-							setTema(value)
-						}}
-						placeholder='Ex.: Anatomia'
-					/>
-					<View style={s.containerButton}>
-						<Button
-							title='Data'
-							onClick={() => setShowDate(true)}
-							icon={IconCalendar}
-							style={{ width: '50%', backgroundColor: colors.gray[500] }}
-						/>
-						<Button
-							title='Hora'
-							onClick={() => setShowTime(true)}
-							icon={IconClockHour1}
-							style={{ width: '50%', backgroundColor: colors.gray[500] }}
-						/>
-					</View>
+				<Text style={s.label}>O que vai estudar?</Text>
+				<Input
+					value={tema}
+					onValueChange={value => {
+						setTema(value)
+					}}
+					placeholder='Ex.: Anatomia'
+				/>
+				<View style={s.containerButton}>
 					<Button
-						title='Adicionar'
-						icon={IconPlus}
-						onClick={CallScheduleNotification}
-						style={{ backgroundColor: colors.red.base, marginTop: 20 }}
+						title='Data'
+						onClick={() => setShowDate(true)}
+						icon={IconCalendar}
+						style={{ width: '50%', backgroundColor: colors.gray[500] }}
 					/>
-					{showDate && (
-						<DateTimePicker
-							testID='datePicker'
-							value={data}
-							mode='date'
-							display='spinner'
-							onChange={(event, selectedDate) => {
-								if (selectedDate) {
-									setData(selectedDate)
-								}
-								setShowDate(false)
-							}}
-						/>
-					)}
-					{showTime && (
-						<DateTimePicker
-							testID='timePicker'
-							value={tempo}
-							mode='time'
-							is24Hour={true}
-							display='spinner'
-							onChange={(event, selectedTime) => {
-								if (selectedTime) {
-									setTempo(selectedTime)
-									data.setHours(selectedTime.getHours())
-									data.setMinutes(selectedTime.getMinutes())
-								}
-								setShowTime(false)
-							}}
-						/>
-					)}
-					<MyModal title='Aviso' visible={agendado}>
-						<Text style={s.descriptionIA}>Seu estudo foi agendado com sucesso. Receberá uma notificação.</Text>
-						<Button
-							title='Fechar'
-							onClick={() => setAgendado(false)}
-							icon={IconX}
-							style={{ backgroundColor: colors.red.base, height: 40, marginTop: 10 }}
-						/>
-					</MyModal>
+					<Button
+						title='Hora'
+						onClick={() => setShowTime(true)}
+						icon={IconClockHour1}
+						style={{ width: '50%', backgroundColor: colors.gray[500] }}
+					/>
 				</View>
+				<Button
+					title='Adicionar'
+					icon={IconPlus}
+					onClick={CallScheduleNotification}
+					style={{ backgroundColor: colors.red.base, marginTop: 20 }}
+				/>
+				{showDate && (
+					<DateTimePicker
+						testID='datePicker'
+						value={data}
+						mode='date'
+						display='spinner'
+						onChange={(event, selectedDate) => {
+							if (selectedDate) {
+								setData(selectedDate)
+							}
+							setShowDate(false)
+						}}
+					/>
+				)}
+				{showTime && (
+					<DateTimePicker
+						testID='timePicker'
+						value={tempo}
+						mode='time'
+						is24Hour={true}
+						display='spinner'
+						onChange={(event, selectedTime) => {
+							if (selectedTime) {
+								setTempo(selectedTime)
+								data.setHours(selectedTime.getHours())
+								data.setMinutes(selectedTime.getMinutes())
+							}
+							setShowTime(false)
+						}}
+					/>
+				)}
+				<MyModal title='Aviso' visible={agendado}>
+					<Text style={s.descriptionIA}>Seu estudo foi agendado com sucesso. Receberá uma notificação.</Text>
+					<Button
+						title='Fechar'
+						onClick={() => setAgendado(false)}
+						icon={IconX}
+						style={{ backgroundColor: colors.red.base, height: 40, marginTop: 10 }}
+					/>
+				</MyModal>
 			</View>
 		</ScrollView>
 	)

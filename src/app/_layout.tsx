@@ -9,14 +9,14 @@ export default function Layout() {
 	const createDbIfNeeded = async (db: SQLiteDatabase) => {
 		await db
 			.execAsync(`
-      CREATE TABLE IF NOT EXISTS tarefas (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          tarefa TEXT NOT NULL,
-          data TEXT NOT NULL,
-          hora INTEGER NOT NULL,
-          minuto INTEGER NOT NULL,
-          status TEXT CHECK(status IN ('Concluido', 'Pendente')) NOT NULL
-      );`)
+	  CREATE TABLE IF NOT EXISTS tarefas (
+		  id INTEGER PRIMARY KEY AUTOINCREMENT,
+		  tarefa TEXT NOT NULL,
+		  data TEXT NOT NULL,
+		  hora INTEGER NOT NULL,
+		  minuto INTEGER NOT NULL,
+		  status TEXT CHECK(status IN ('Concluido', 'Pendente')) NOT NULL
+	  );`)
 			.then(value => console.log(value))
 	}
 
@@ -37,7 +37,38 @@ export default function Layout() {
 					headerShown: false,
 					contentStyle: { backgroundColor: colors.gray[600] },
 				}}
-			/>
+			>
+				<Stack.Screen name='index' />
+				<Stack.Screen name='home' />
+				<Stack.Screen
+					name='create'
+					options={{
+						headerShown: true,
+						title: 'Agendar estudo',
+						headerStyle: {
+							backgroundColor: colors.gray[600],
+						},
+						headerTitleStyle: {
+							fontFamily: 'Rubik_500Medium',
+						},
+						headerTintColor: '#FFFFFF',
+					}}
+				/>
+				<Stack.Screen
+					name='pomodoro'
+					options={{
+						headerShown: true,
+						title: 'Pomodoro',
+						headerStyle: {
+							backgroundColor: colors.gray[600],
+						},
+						headerTitleStyle: {
+							fontFamily: 'Rubik_500Medium',
+						},
+						headerTintColor: '#FFFFFF',
+					}}
+				/>
+			</Stack>
 		</SQLiteProvider>
 	)
 }
