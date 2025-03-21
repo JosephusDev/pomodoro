@@ -4,6 +4,15 @@ import { useFonts, Rubik_400Regular, Rubik_500Medium, Rubik_600SemiBold, Rubik_7
 import { Loading } from '@/components/loading'
 import { SQLiteDatabase, SQLiteProvider } from 'expo-sqlite'
 import { StatusBar } from 'expo-status-bar'
+import * as SplashScreen from 'expo-splash-screen'
+import { useEffect } from 'react'
+
+SplashScreen.preventAutoHideAsync()
+
+SplashScreen.setOptions({
+	duration: 1000,
+	fade: true,
+})
 
 export default function Layout() {
 	const createDbIfNeeded = async (db: SQLiteDatabase) => {
@@ -26,6 +35,12 @@ export default function Layout() {
 		Rubik_600SemiBold,
 		Rubik_700Bold,
 	})
+
+	useEffect(() => {
+		if (fontsLoaded) {
+			SplashScreen.hideAsync()
+		}
+	}, [fontsLoaded])
 
 	if (!fontsLoaded) return <Loading />
 

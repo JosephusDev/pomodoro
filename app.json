@@ -10,8 +10,8 @@
 		"newArchEnabled": true,
 		"splash": {
 			"image": "./assets/images/splash-icon.png",
-			"resizeMode": "cover",
-			"backgroundColor": "#000000"
+			"resizeMode": "contain",
+			"backgroundColor": "#1A1F24"
 		},
 		"ios": {
 			"supportsTablet": true
@@ -19,7 +19,7 @@
 		"android": {
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/images/adaptive-icon.png",
-				"backgroundColor": "#000000"
+				"backgroundColor": "#1A1F24"
 			},
 			"permissions": ["android.permission.RECORD_AUDIO", "android.permission.MODIFY_AUDIO_SETTINGS"],
 			"package": "com.josephusdev.pomodoro"
@@ -29,7 +29,23 @@
 			"output": "static",
 			"favicon": "./assets/images/favicon.png"
 		},
-		"plugins": ["expo-router", "expo-font", "expo-audio", "expo-sqlite"],
+		"plugins": [
+			"expo-router",
+			"expo-font",
+			"expo-audio",
+			"expo-sqlite",
+			[
+				"expo-splash-screen",
+				{
+					"backgroundColor": "#1A1F24",
+					"image": "./assets/splash-icon.png",
+					"dark": {
+						"image": "./assets/splash-icon.png",
+						"backgroundColor": "#1A1F24"
+					}
+				}
+			]
+		],
 		"experiments": {
 			"typedRoutes": true
 		},
