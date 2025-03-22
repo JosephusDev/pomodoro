@@ -9,7 +9,7 @@ export const s = StyleSheet.create({
 		flexDirection: 'row',
 	},
 	button: {
-		paddingVertical: 12,
+		paddingVertical: 15,
 		paddingHorizontal: 16,
 		alignItems: 'center',
 		justifyContent: 'center',

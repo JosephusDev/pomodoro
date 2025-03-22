@@ -152,7 +152,7 @@ export default function Pomodoro() {
 							setPomodoroPlan('')
 						}}
 						placeholder='Ex.: Anatomia'
-						style={{ width: '82%', paddingVertical: 5, textAlign: 'center' }}
+						style={{ width: '82%' }}
 					/>
 					<Button
 						onClick={() => {

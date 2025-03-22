@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router'
+import { router, Stack } from 'expo-router'
 import { colors } from '@/styles/theme'
 import { useFonts, Rubik_400Regular, Rubik_500Medium, Rubik_600SemiBold, Rubik_700Bold } from '@expo-google-fonts/rubik'
 import { Loading } from '@/components/loading'
@@ -6,6 +6,8 @@ import { SQLiteDatabase, SQLiteProvider } from 'expo-sqlite'
 import { StatusBar } from 'expo-status-bar'
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
+import { Pressable } from 'react-native'
+import { Feather } from '@expo/vector-icons'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -51,6 +53,12 @@ export default function Layout() {
 				screenOptions={{
 					headerShown: false,
 					contentStyle: { backgroundColor: colors.gray[600] },
+					headerTitleAlign: 'center',
+					headerLeft: () => (
+						<Pressable onPress={() => router.back()}>
+							<Feather name='chevron-left' size={25} color={colors.red.base} />
+						</Pressable>
+					),
 				}}
 			>
 				<Stack.Screen name='index' />
@@ -73,7 +81,7 @@ export default function Layout() {
 					name='pomodoro'
 					options={{
 						headerShown: true,
-						title: 'Pomodoro',
+						title: 'Modo Foco',
 						headerStyle: {
 							backgroundColor: colors.gray[600],
 						},
