@@ -19,7 +19,7 @@
 		"android": {
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/images/adaptive-icon.png",
-				"backgroundColor": "#000000"
+				"backgroundColor": "#FFFFFF"
 			},
 			"permissions": ["android.permission.RECORD_AUDIO", "android.permission.MODIFY_AUDIO_SETTINGS"],
 			"package": "com.josephusdev.pomodoro"

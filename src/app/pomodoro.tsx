@@ -1,4 +1,3 @@
-import { Welcome } from '@/components/welcome'
 import { ScrollView, Text, View } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import Button from '@/components/button'

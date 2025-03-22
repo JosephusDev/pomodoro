@@ -6,15 +6,17 @@ import { StatusBar } from 'expo-status-bar'
 import FloatingButton from '@/components/floating-button'
 import { router } from 'expo-router'
 import { IconPlus } from '@tabler/icons-react-native'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ListEmpty from '@/components/list-empty'
 import Todo from '@/components/todo'
 import Resume from '@/components/resume'
 import { getTarefas, updateTarefa, deleteTarefa } from '@/models/tarefas'
 import { useSQLiteContext } from 'expo-sqlite'
 import { ITarefa } from '@/types'
+import { Confetti, ConfettiMethods } from 'react-native-fast-confetti'
 
 export default function Home() {
+	const confettiRef = useRef<ConfettiMethods>(null)
 	const [agendamentos, setAgendamentos] = useState<ITarefa[]>([])
 
 	const db = useSQLiteContext()
@@ -25,6 +27,7 @@ export default function Home() {
 
 	const handleChangeState = async (id: number, status: 'Concluido' | 'Pendente') => {
 		if (status === 'Pendente') {
+			confettiRef.current?.restart()
 			await updateTarefa(db, id, 'Concluido')
 		} else {
 			await updateTarefa(db, id, 'Pendente')
@@ -49,25 +52,23 @@ export default function Home() {
 			<Welcome title='Lista de Tarefas' subtitle='Gerencie seus estudos agendados.' />
 			<Resume criadas={agendamentos.length} concluidas={concluidas} />
 			<View style={s.container}>
-				{agendamentos.length <= 0 ? (
-					<ListEmpty />
-				) : (
-					<FlatList
-						data={agendamentos}
-						keyExtractor={item => String(item.id)}
-						renderItem={({ item }) => (
-							<Todo
-								data={item}
-								onPressStatus={() => handleChangeState(item.id, item.status)}
-								onPressDelete={() => handleDelete(item.id)}
-								onClick={() => router.navigate(`/pomodoro?estudo=${item.tarefa}`)}
-							/>
-						)}
-						scrollEnabled={true}
-						style={s.flatList}
-					/>
-				)}
+				<FlatList
+					data={agendamentos}
+					keyExtractor={item => String(item.id)}
+					renderItem={({ item }) => (
+						<Todo
+							data={item}
+							onChangeStatus={() => handleChangeState(item.id, item.status)}
+							onDelete={() => handleDelete(item.id)}
+							onClick={() => router.navigate(`/pomodoro?estudo=${item.tarefa}`)}
+						/>
+					)}
+					scrollEnabled={true}
+					style={s.flatList}
+					ListEmptyComponent={<ListEmpty />}
+				/>
 			</View>
+			<Confetti ref={confettiRef} autoplay={false} count={100} fadeOutOnEnd />
 			<FloatingButton icon={IconPlus} style={{ bottom: 20 }} onPress={() => router.navigate('/create')} />
 		</View>
 	)
