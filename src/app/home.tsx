@@ -14,6 +14,7 @@ import { getTarefas, updateTarefa, deleteTarefa } from '@/models/tarefas'
 import { useSQLiteContext } from 'expo-sqlite'
 import { ITarefa } from '@/types'
 import { Confetti, ConfettiMethods } from 'react-native-fast-confetti'
+import { SkeletonTasks } from '@/components/skeleton-tasks'
 
 export default function Home() {
 	const confettiRef = useRef<ConfettiMethods>(null)
@@ -68,7 +69,7 @@ export default function Home() {
 			<Resume criadas={agendamentos.length} concluidas={concluidas} />
 			<View style={s.container}>
 				{isLoading ? (
-					<ActivityIndicator size='small' color={colors.red.base} />
+					<SkeletonTasks />
 				) : (
 					<FlatList
 						data={agendamentos}
